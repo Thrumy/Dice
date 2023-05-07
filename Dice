@@ -1,0 +1,208 @@
+#include <iostream>   //заголовочные файлы
+using namespace std;  //имя
+ 
+struct Stack {        //ввод структуры stack
+    int info;         //информация в целочисленном виде
+    Stack *next;      //следующая
+} ;
+ 
+Stack *input(Stack *p, int in);           //ввод данных
+Stack *New_Stack_5(Stack  *p, int min);   //создание нового stack
+Stack *pop(Stack *p);                     //выбор
+Stack* OutStack(Stack *p, int &out);      //вывод данных
+void show(Stack *p);                      //показать
+void Clear(Stack **p);                    //очистить
+void *Del(Stack *p, int );                //удалить
+int sort(Stack *p);                       //сортировать
+int unnumericInputProtection();           //защита от ввода некорекктных символов
+int main()                                //обозначает целые числа
+
+    {
+    Stack *kopf, *kopf1;                                    //базовый stack                    
+    kopf = kopf1 = NULL;                                    //два базовых stack
+    int min=0;                                              //базовый stack и два базовых stack
+    setlocale(LC_ALL, "Russian");                           //позволяет писать киррилицей
+    srand((unsigned)time(NULL));                            //функция, которая возвращает случайное число
+    int choise, kol, in;                                    //нумерация констант
+    cout << "" << endl << "\t\t\tИгральные кости" << endl;  //вывод на экран надписи
+    while (true)                                            //окончание цикла
+    {
+        cout << "" << endl << "1.Бросить кости" << endl << "2.Добавить очки" << endl << "3.Посмотреть результат бросков" << endl << "4.Удалить стэк" << endl << "5.Стереть данные" << endl   //вывод на экран надписи
+             << "" << endl << "0.Выход" << endl;                                                                                                                  //вывод на экран надписи
+        choise = unnumericInputProtection();                                                                                                                     //нумерация констант
+        switch (choise)                                                                                                                                          //переход на выбор
+        {
+        case 1:                                                           //первый блок
+            if (choise == 1 && kopf != NULL)                              //выбор
+            {
+                cout << " " << endl;                                      //вывод на экран надписи
+                break;                                                    //завершение цикла
+            }
+            cout << " " << endl;                                          //вывод на экран надписи
+            cout << "Количество бросков: " << endl;                       //вывод на экран надписи
+            kol = unnumericInputProtection();                             //нумерация констант
+            for (int i = 0; i < kol; i++)                                 //ввод формул
+            {
+                in = rand() % (abs(9) - 2);                               //функция, которая возвращает случайное число
+                kopf = input(kopf, in);                                   //базовый stack
+            }
+            break;                                                        //завершение цикла
+        case 2:                                             //второй блок
+            cout << "Введите количество очков: " << endl;   //вывод на экран надписи
+            in = unnumericInputProtection();                //нумерация констант
+            kopf = input(kopf, in);                         //базовый stack
+            break;                                          //завершение цикла
+        case 3:                                                   //третий блок
+            if (!kopf)                                            //если..
+            {
+                cout << "Бросков не было" << endl;                //вывод на экран надписи
+                break;                                            //завершение цикла
+            }
+            cout << "Результат:" << endl;                         //вывод на экран надписи
+            show(kopf);                                           //показать
+            break;                                                //завершение цикла
+       case 4:                                              //четвёртый блок
+            if (!kopf)                                      //если..
+            {
+                cout << "Бросков не было" << endl;          //вывод на экран надписи
+                break;                                      //завершение цикла
+            }
+            kopf = pop(kopf);                               //выборка
+            break;                                          //завершение цикла
+        case 5:                                                   //пятый блок
+            Clear(&kopf);                                         //очистить
+            cout << "" << endl;                                   //вывод на экран надписи
+            cout << "*Данные удалены*" << endl;                   //вывод на экран надписи
+            break;                                                //завершение цикла
+        case 0:                               //нулевой блок
+            if (kopf != NULL)                 //условие, если значение не равно нулю
+                Clear(&kopf);                 //очистить
+            if (kopf1 != NULL)                //условие, если значение не равно нулю
+                Clear(&kopf1);                //очистить
+            return 0;                         //повторить ноль раз
+        }
+    }
+    return 0;                                 //вернуться ноль раз
+}
+Stack *input(Stack *p, int in)                //ввод данных
+{
+    Stack *a = new Stack;                     //создание нового stack
+    a->info = in;                             //задаем переменную
+    a->next = p;                              //задаем переменную
+    return a;                                 //вернуться "a" раз
+}
+Stack *input1(Stack *a, int in)               //ввод данных
+{
+    Stack *t = new Stack;                     //создание нового stack
+    t->info = in;                             //задаем переменную
+    t->next = a;                              //задаем переменную
+    return t;                                 //вернуться "t" раз
+}
+Stack *pop(Stack *p)                          //выборка
+{
+    Stack *t;                                 //создание нового stack
+    t = p;                                    //задаем переменную
+    p = p->next;                              //задаем переменную
+    delete t;                                 //удалить
+    return p;                                 //вернуться "p" раз
+}
+void *Del(Stack *p, int MaxElement)           //удалить
+{
+    cout << "\t\t\tМаксимальный элемент: " << MaxElement << endl;                              //вывод на экран надписи
+    Stack *previous = p;                                                                       //предыдущий stack
+    Stack *Sp = p->next;                                                                       //новый stack
+    while (Sp != NULL)                                                                         //запуск цикла
+    {
+       if ((Sp->info) == MaxElement)                                                           //если..
+        {
+            previous->next = Sp->next;                                                         //проводим связь от предыдущего элемента к следующему
+            delete Sp;                                                                         //удалить
+           Sp = previous->next;                                                                //переход с предыдущего на новый
+        }
+        else                                                                                   //иначе
+        {
+            previous = Sp;                                                                     //предыдущий stack
+            Sp = Sp->next;                                                                     //новый stack
+        }
+    }
+    return p;                                                                                  //вернуть "p" раз
+}
+void show(Stack *p)                                                                            //показать
+{
+ 
+    while (p != NULL)                                                                          //тогда как "p" = 0
+    {
+        cout << p->info << " ";                                                                //вывод на экран надписи
+        p = p->next;                                                                           //новый stack
+    }                                                      
+    cout << endl;                                                                              //вывод на экран надписи
+}
+void Clear(Stack **p)                                                                          //очистить
+{
+    Stack *t;                                                                                  //stack "t"
+    while (*p != NULL)                                                                         //тогда как "p" = 0
+    {
+        t = *p;                                                                                //задаем переменную
+        *p = (*p)->next;                                                                       //переход на следующую "p"
+        delete t;                                                                              //удалить "t"
+    }
+}
+int sort(Stack *p)                                                                             //целочисленная переменная
+{
+    Stack *t = p;                                                                              //
+    int min = t->info;                                                                         //целочисленная переменная
+    while (t != NULL)                                                                          //
+    {
+        if (min > t->info)                                                                     //если..
+        {
+            min = t->info;                                                                     //
+        }
+        t = (t)->next;                                                                         //
+    }
+    cout << min;                                                                               //вывод на экран надписи
+    return min;                                                                                //возврат
+}
+int unnumericInputProtection()                                                                 //целочисленная переменная
+{
+    int number;                                                                                //целочисленная переменная
+    while (true)                                                                               //
+    {
+        while (!(cin >> number))                                                               //
+        {
+            cout << "Значение должно быть числом!\n";                                        //завершение цикла
+            cin.clear();                                                                       //очистить
+            cin.ignore(256, '\n');                                                             //
+        }
+        if (number >= 0)                                                                       //если..
+        {
+            break;                                                                             //завершение цикла
+        }
+        else                                                                                   //иначе
+        {
+            cout << "Значение должно быть положительным!" << endl << "Введите снова: ";         //вывод на экран надписи
+            continue;                                                                           //продолжить
+        }
+    }
+    return number;                                                                             //возврат
+}
+Stack*  New_Stack_5(Stack  *p, int min)                                                        //
+{
+    int  inf;                                                                                  //целочисленная переменная
+    Stack  *new_p = NULL;                                                                      //                                                  
+    Stack *t = p;                                                                              //
+    p = p->next;                                                                               //
+    while (p->info >= min) {                                                                   //
+        p = OutStack(p, inf);                                                                  //
+       
+            new_p = input1(new_p, inf);                                                        //
+            p = p->next;                                                                       //
+    }
+    return  new_p;                                                                             //возврат
+}
+Stack* OutStack(Stack *p, int &out) {                                                          //
+    Stack *t = p;                                                                              //
+    out = p->info;                                                                             //
+    p = p->next;                                                                               //переход на следующую "p"
+    delete t;                                                                                  //удалить
+    return p;                                                                                  //возврат
+}
