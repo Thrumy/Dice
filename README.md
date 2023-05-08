@@ -4,6 +4,6 @@ When you launch the program, a terminal opens up with six possible actions. They
    1: You enter the number of dice thrown.
    2: You manually add points.
    3: You are viewing all the results that have been drawn.
-   4: You remove the stack.
+   4: You are number one.
    5: You delete all the results that have fallen.
    0: You exit the program.
